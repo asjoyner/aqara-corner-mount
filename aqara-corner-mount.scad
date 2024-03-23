@@ -35,12 +35,15 @@ screwThreadDiameter = 4;
 screwheadDiameter = 9;
 screwheadDepth = 5.2;   // distance from face of screw to start of threads
 
-screwSeparation = 33;  // Distance between Aqara magnets
+screwSeparation = 35;  // Distance between Aqara magnets
 screwSeparationOnAngle = (screwSeparation/sqrt(2));  // distance between magnets in the 45 degree plane
 screwOffsetFromCenter = screwSeparationOnAngle/2;
 //screwOffset = screwOffsetFromCenter - (screwheadDepth/sqrt(2));
-screwOffset=5.25;
-screwDepth=14;
+// best magnetic hold so far, Fatboy Proud Screws:
+//screwOffset=5.25;
+//screwDepth=14;
+screwOffset=6.15;
+screwDepth=12.25;
 echo("screwOffset: ", screwOffset);  // determined to keep the screw 
 
 overlap=0.001;  // overlap each side by 1mm
