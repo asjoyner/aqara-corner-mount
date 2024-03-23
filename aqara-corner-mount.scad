@@ -1,6 +1,6 @@
 $fa = 1;
 $fs = 0.4;
-height=70; // working in mm
+height=75; // working in mm
 width=height/sqrt(2);
 mountDepth=3;
 mountRadius=24.75;  // set to 24.5 for a tight friction fit
@@ -9,14 +9,14 @@ faceRadius=mountRadius+faceBrimWidth;
 rearRadius=6;
 rearConeDepth=height;
 
-powerGroupHeight=height/2-17;
+powerGroupHeight=height/2-20;
 
 pocketFrontWallThickness=.75;
 pocketDepth=30;  // when viewed from the top, how far down does the pocket extend
 pocketWidth=16;  // when viewed from the top, how wide is the pocket
 pocketHeight=10; // when viewed from the top, how "tall" is the pocket
 
-cablepocketFrontWallThickness=4.5;
+cablepocketFrontWallThickness=6;
 cablepocketDepth=30;  // when viewed from the top, how far down does the pocket extend
 cablepocketWidth=10;  // when viewed from the top, how wide is the pocket
 cablepocketHeight=8; // when viewed from the top, how "tall" is the pocket
@@ -31,7 +31,7 @@ wallCornerRelief=3;
 // Wood screw head diameter: 11mm
 // Wood screw thread diamter: 5mm
 // head depth of both: 5.2mm
-screwThreadDiameter = 3;
+screwThreadDiameter = 4;
 screwheadDiameter = 9;
 screwheadDepth = 5.2;   // distance from face of screw to start of threads
 
@@ -39,8 +39,8 @@ screwSeparation = 33;  // Distance between Aqara magnets
 screwSeparationOnAngle = (screwSeparation/sqrt(2));  // distance between magnets in the 45 degree plane
 screwOffsetFromCenter = screwSeparationOnAngle/2;
 //screwOffset = screwOffsetFromCenter - (screwheadDepth/sqrt(2));
-screwOffset=5;
-screwDepth=11.5;
+screwOffset=4.5;
+screwDepth=11;
 echo("screwOffset: ", screwOffset);  // determined to keep the screw 
 
 overlap=0.001;  // overlap each side by 1mm
@@ -77,8 +77,7 @@ intersection() {
         translate([0,0,cablepocketFrontWallThickness]) // leave some material
         translate([0,-powerplugWallThickness,0])  // move down to match base
         cube([pocketWidth,pocketDepth+(powerplugWallThickness*2),pocketHeight],center=true);
-  
-      
+
         // hole for 12v power plug
         color("blue")
         translate([0,0,powerGroupHeight])                 // move to top
@@ -99,24 +98,23 @@ intersection() {
         rotate([0,-45,0])   // align to face
         translate([0,powerGroupHeight-cablepocketDepth/2,0]) // move to top
         translate([0,-powerplugWallThickness,0]) // move below power plug hole
-        translate([0,0,cablepocketHeight/2]) // align front of pocket with face
+        translate([0,0,cablepocketHeight]) // align front of pocket with face
         translate([0,0,mountDepth])   // move back by mount depth
         translate([0,0,pocketHeight])  // move back by cable pocket depth
         cube([cablepocketWidth,cablepocketDepth+(powerplugWallThickness),cablepocketHeight],center=true);
         
         // flatten the top of the power pocket(s)
         flattopDepth=20;
-        flattopExtension=5;  // how far the flattop clips towards the corner of the wall
+        flattopExtension=15;  // how far the flattop clips towards the corner of the wall
         flattopHeight=cablepocketFrontWallThickness+
                       pocketHeight+
                       powerplugWallThickness+
-                      powerplugDiameter+
-                      flattopExtension;
+                      powerplugDiameter;
         rotate(135)
         translate([0,0,powerGroupHeight+flattopDepth/2]) // align bottom with powerGroupHeight
         translate([0,flattopExtension/2,0]) // shift the front half of the extension distance to the back
-        translate([0,(cablepocketFrontWallThickness+mountDepth+cablepocketFrontWallThickness+powerplugDiameter),0])
-        cube([height,flattopHeight,flattopDepth],center=true);
+        translate([0,(flattopHeight/2),0])
+        cube([height,(flattopHeight/2)+flattopExtension,flattopDepth],center=true);
        
         // Wall corner relief
         rotate(45)
