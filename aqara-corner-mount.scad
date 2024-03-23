@@ -1,6 +1,6 @@
 $fa = 1;
 $fs = 0.4;
-height=62; // working in mm
+height=70; // working in mm
 width=height/sqrt(2);
 mountDepth=3;
 mountRadius=24.75;  // set to 24.5 for a tight friction fit
@@ -9,14 +9,14 @@ faceRadius=mountRadius+faceBrimWidth;
 rearRadius=6;
 rearConeDepth=height;
 
-powerGroupHeight=height/2-14;
+powerGroupHeight=height/2-17;
 
 pocketFrontWallThickness=.75;
 pocketDepth=30;  // when viewed from the top, how far down does the pocket extend
 pocketWidth=16;  // when viewed from the top, how wide is the pocket
 pocketHeight=10; // when viewed from the top, how "tall" is the pocket
 
-cablepocketFrontWallThickness=1.5;
+cablepocketFrontWallThickness=4.5;
 cablepocketDepth=30;  // when viewed from the top, how far down does the pocket extend
 cablepocketWidth=10;  // when viewed from the top, how wide is the pocket
 cablepocketHeight=8; // when viewed from the top, how "tall" is the pocket
@@ -36,13 +36,16 @@ screwheadDiameter = 9;
 screwheadDepth = 5.2;   // distance from face of screw to start of threads
 
 screwSeparation = 33;  // Distance between Aqara magnets
-screwSeparationOnAngle = (screwSeparation/sqrt(2));  // distance between min the 45 degree plane
+screwSeparationOnAngle = (screwSeparation/sqrt(2));  // distance between magnets in the 45 degree plane
 screwOffsetFromCenter = screwSeparationOnAngle/2;
-screwOffset = screwOffsetFromCenter - (screwheadDepth/sqrt(2));
+//screwOffset = screwOffsetFromCenter - (screwheadDepth/sqrt(2));
+screwOffset=5;
+screwDepth=11.5;
 echo("screwOffset: ", screwOffset);  // determined to keep the screw 
 
 overlap=0.001;  // overlap each side by 1mm
 
+rotate(45)
 intersection() {
     difference(){
         // Start with a cube of the right dimensions
@@ -131,7 +134,7 @@ intersection() {
 module screwhole(length) {
 
     translate([0,0,-(width+screwheadDepth-(length/2))])  // move to flush with wall
-    translate([0,0,screwheadDepth])                      // bring screwhead back surface
+    translate([0,0,screwDepth])                      // bring screwhead back surface
     {
     // create the screw hole
     cylinder(length,screwThreadDiameter/2,screwThreadDiameter/2,center=true);
