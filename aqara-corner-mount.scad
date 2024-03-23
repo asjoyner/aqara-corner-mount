@@ -39,8 +39,8 @@ screwSeparation = 33;  // Distance between Aqara magnets
 screwSeparationOnAngle = (screwSeparation/sqrt(2));  // distance between magnets in the 45 degree plane
 screwOffsetFromCenter = screwSeparationOnAngle/2;
 //screwOffset = screwOffsetFromCenter - (screwheadDepth/sqrt(2));
-screwOffset=4.5;
-screwDepth=11;
+screwOffset=5.25;
+screwDepth=14;
 echo("screwOffset: ", screwOffset);  // determined to keep the screw 
 
 overlap=0.001;  // overlap each side by 1mm
@@ -97,7 +97,7 @@ intersection() {
         rotate([90,0,0])    // stand upright
         rotate([0,-45,0])   // align to face
         translate([0,powerGroupHeight-cablepocketDepth/2,0]) // move to top
-        translate([0,-powerplugWallThickness,0]) // move below power plug hole
+        translate([0,-powerplugWallThickness*1.5,0]) // move below power plug hole
         translate([0,0,cablepocketHeight]) // align front of pocket with face
         translate([0,0,mountDepth])   // move back by mount depth
         translate([0,0,pocketHeight])  // move back by cable pocket depth
