@@ -2,10 +2,12 @@ $fa = 1;
 $fs = 0.4;
 height=62; // working in mm
 width=height/sqrt(2);
-mountDepth=4;
-mountRadius=24.5;
+mountDepth=3;
+mountRadius=24.75;  // set to 24.5 for a tight friction fit
 faceBrimWidth=2;
 faceRadius=mountRadius+faceBrimWidth;
+rearRadius=6;
+rearConeDepth=height;
 
 powerGroupHeight=height/2-14;
 
@@ -14,7 +16,7 @@ pocketDepth=30;  // when viewed from the top, how far down does the pocket exten
 pocketWidth=16;  // when viewed from the top, how wide is the pocket
 pocketHeight=10; // when viewed from the top, how "tall" is the pocket
 
-cablepocketFrontWallThickness=.75;
+cablepocketFrontWallThickness=1.5;
 cablepocketDepth=30;  // when viewed from the top, how far down does the pocket extend
 cablepocketWidth=10;  // when viewed from the top, how wide is the pocket
 cablepocketHeight=8; // when viewed from the top, how "tall" is the pocket
@@ -24,10 +26,20 @@ powerplugWallThickness=2;   // thickness of the material around the plug
 
 wallCornerRelief=3;
 
-// TODO: do lots of trigonometry to calculate the perfect screwOffset
-//aqaraMagnetFromRim=6.35;
-//screwOffset=faceBrimWidth+aqaraMagnetFromRim;
-screwOffset=6.75;
+// Drywall screw head diameter: 9mm
+// Drywall screw thread diameter: 3mm
+// Wood screw head diameter: 11mm
+// Wood screw thread diamter: 5mm
+// head depth of both: 5.2mm
+screwThreadDiameter = 3;
+screwheadDiameter = 9;
+screwheadDepth = 5.2;
+
+screwSeparation = 33;  // Distance between Aqara magnets
+screwSeparationOnAngle = (screwSeparation/sqrt(2));
+screwOffsetFromCenter = screwSeparationOnAngle/2;
+screwOffset = screwOffsetFromCenter - (screwheadDiameter/2);
+echo("screwOffset: ", screwOffset);  // determined to keep the screw 
 screwDepth=6;
 
 overlap=0.001;  // overlap each side by 1mm
@@ -111,26 +123,12 @@ intersection() {
         cube(height+overlap*2, center=true);
 
     }
-/*
-    rotate(-45)
-    translate([0,-10,0])
-    sphere(28.5);  // TODO: Consider a cone reduction instead
-*/
     rotate(45)
     rotate([0,-90,0])
-    cylinder(h=60,r1=faceRadius,r2=mountRadius/2);
+    cylinder(h=rearConeDepth,r1=faceRadius,r2=rearRadius);
 }
 
 
-        
-// Drywall screw head diameter: 8mm
-// Drywall screw thread diameter: 4mm
-// Wood screw head diameter: 10mm
-// Wood screw thread diamter: 5mm
-// head depth of both: 5.2mm
-screwThreadDiameter = 3;
-screwheadDiameter = 9;
-screwheadDepth = 5.2;
 module screwhole(length) {
 
     translate([0,0,-(width+screwheadDepth-(length/2))])  // move to flush with wall
