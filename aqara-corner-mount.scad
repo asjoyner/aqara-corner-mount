@@ -3,8 +3,8 @@ $fs = 0.4;
 height=75; // working in mm
 width=height/sqrt(2);
 mountDepth=3;
-mountRadius=24.75;  // set to 24.5 for a tight friction fit
-faceBrimWidth=2;
+mountRadius=24.6;  // set to 24.5 for a tight friction fit, 24.75 for easy sliding
+faceBrimWidth=1;
 faceRadius=mountRadius+faceBrimWidth;
 rearRadius=6;
 rearConeDepth=height;
@@ -18,10 +18,10 @@ pocketHeight=10; // when viewed from the top, how "tall" is the pocket
 
 cablepocketFrontWallThickness=6;
 cablepocketDepth=30;  // when viewed from the top, how far down does the pocket extend
-cablepocketWidth=10;  // when viewed from the top, how wide is the pocket
-cablepocketHeight=8; // when viewed from the top, how "tall" is the pocket
+cablepocketWidth=12;  // when viewed from the top, how wide is the pocket
+cablepocketHeight=11; // when viewed from the top, how "tall" is the pocket
 
-powerplugDiameter=10.5;      // diameter of the 12v power plug
+powerplugDiameter=9;      // diameter of the 12v power plug
 powerplugWallThickness=2;   // thickness of the material around the plug
 
 wallCornerRelief=3;
@@ -46,7 +46,7 @@ screwOffset=6.15;
 screwDepth=12.25;
 echo("screwOffset: ", screwOffset);  // determined to keep the screw 
 
-overlap=0.001;  // overlap each side by 1mm
+overlap=0.005;  // overlap each side by 1mm
 
 rotate(45)
 intersection() {
