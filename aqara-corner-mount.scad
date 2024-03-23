@@ -1,11 +1,13 @@
 $fa = 1;
 $fs = 0.4;
-height=60; // working in mm
+height=62; // working in mm
 width=height/sqrt(2);
 mountDepth=4;
 mountRadius=24.5;
+faceBrimWidth=2;
+faceRadius=mountRadius+faceBrimWidth;
 
-powerGroupHeight=height/2-6.5;
+powerGroupHeight=height/2-14;
 
 pocketFrontWallThickness=.75;
 pocketDepth=30;  // when viewed from the top, how far down does the pocket extend
@@ -18,9 +20,15 @@ cablepocketWidth=10;  // when viewed from the top, how wide is the pocket
 cablepocketHeight=8; // when viewed from the top, how "tall" is the pocket
 
 powerplugDiameter=10.5;      // diameter of the 12v power plug
-powerplugWallThickness=1;   // thickness of the material around the plug
+powerplugWallThickness=2;   // thickness of the material around the plug
 
 wallCornerRelief=3;
+
+// TODO: do lots of trigonometry to calculate the perfect screwOffset
+//aqaraMagnetFromRim=6.35;
+//screwOffset=faceBrimWidth+aqaraMagnetFromRim;
+screwOffset=6.75;
+screwDepth=6;
 
 overlap=0.001;  // overlap each side by 1mm
 
@@ -40,10 +48,10 @@ intersection() {
 
         // screw holes
         rotate([-90,0,0])
-        translate([width/6,0,0])        // move 1/2 way to the edge
+        translate([screwOffset,0,0])    // move towards to the edge
         screwhole(length=width/2);      // left screw, viewed from front
         rotate([90,0,90])
-        translate([width/6,0,0])      // move 1/2 way to the edge
+        translate([screwOffset,0,0])    // move towards to the edge
         screwhole(length=width/2);      // right screw, viewed from front
         
         // Power supply pocket
@@ -53,7 +61,8 @@ intersection() {
         translate([0,0,pocketHeight/2]) // align front of pocket with face
         translate([0,0,mountDepth])     // move back by mount depth
         translate([0,0,cablepocketFrontWallThickness]) // leave some material
-        cube([pocketWidth,pocketDepth,pocketHeight],center=true);
+        translate([0,-powerplugWallThickness,0])  // move down to match base
+        cube([pocketWidth,pocketDepth+(powerplugWallThickness*2),pocketHeight],center=true);
   
       
         // hole for 12v power plug
@@ -65,9 +74,10 @@ intersection() {
         translate([-mountDepth,0,0])              // move back by mount depth
         translate([-cablepocketFrontWallThickness,0,0]) // leave some material
         translate([-pocketHeight,0,0])            // move back by cable pocket depth
-        translate([-powerplugWallThickness,0,0])  // move back from power pocket
+        translate([-powerplugWallThickness,0,0])  // move back from power pocket        
+        translate([0,0,-powerplugWallThickness])  // move down to match base
         translate([0,0,overlap])                  // ensure it protrudes the surface
-        cylinder(h=cablepocketDepth, r=powerplugDiameter/2, center=true);
+        cylinder(h=cablepocketDepth+(powerplugWallThickness*2), r=powerplugDiameter/2, center=true);
 
         // pocket for power supply cable
         color("orange")
@@ -78,15 +88,20 @@ intersection() {
         translate([0,0,cablepocketHeight/2]) // align front of pocket with face
         translate([0,0,mountDepth])   // move back by mount depth
         translate([0,0,pocketHeight])  // move back by cable pocket depth
-        cube([cablepocketWidth,cablepocketDepth,cablepocketHeight],center=true);
+        cube([cablepocketWidth,cablepocketDepth+(powerplugWallThickness),cablepocketHeight],center=true);
         
         // flatten the top of the power pocket(s)
-        flattopDepth=15;
-        flattopHeight=cablepocketFrontWallThickness+pocketHeight+powerplugWallThickness+powerplugDiameter;
+        flattopDepth=20;
+        flattopExtension=5;  // how far the flattop clips towards the corner of the wall
+        flattopHeight=cablepocketFrontWallThickness+
+                      pocketHeight+
+                      powerplugWallThickness+
+                      powerplugDiameter+
+                      flattopExtension;
         rotate(135)
-        translate([0,0,powerGroupHeight+flattopDepth/2])    // align bottom with powerGroupHeight
-        //translate([0,flattopHeight/2,0])                    // center the flattop over the front face
-        translate([0,(mountDepth+cablepocketFrontWallThickness+powerplugDiameter),0])
+        translate([0,0,powerGroupHeight+flattopDepth/2]) // align bottom with powerGroupHeight
+        translate([0,flattopExtension/2,0]) // shift the front half of the extension distance to the back
+        translate([0,(cablepocketFrontWallThickness+mountDepth+cablepocketFrontWallThickness+powerplugDiameter),0])
         cube([height,flattopHeight,flattopDepth],center=true);
        
         // Wall corner relief
@@ -96,11 +111,15 @@ intersection() {
         cube(height+overlap*2, center=true);
 
     }
+/*
     rotate(-45)
     translate([0,-10,0])
     sphere(28.5);  // TODO: Consider a cone reduction instead
+*/
+    rotate(45)
+    rotate([0,-90,0])
+    cylinder(h=60,r1=faceRadius,r2=mountRadius/2);
 }
-
 
 
         
@@ -109,13 +128,13 @@ intersection() {
 // Wood screw head diameter: 10mm
 // Wood screw thread diamter: 5mm
 // head depth of both: 5.2mm
-screwThreadDiameter = 4;
-screwheadDiameter = 8;
+screwThreadDiameter = 3;
+screwheadDiameter = 9;
 screwheadDepth = 5.2;
 module screwhole(length) {
 
-    translate([0,0,-(width+screwheadDepth-length/2)])  // move to flush with wall
-    translate([0,0,4])  // bring screwhead back surface
+    translate([0,0,-(width+screwheadDepth-(length/2))])  // move to flush with wall
+    translate([0,0,screwDepth])  // bring screwhead back surface
     {
     // create the screw hole
     cylinder(length,screwThreadDiameter/2,screwThreadDiameter/2,center=true);
@@ -130,6 +149,4 @@ module screwhole(length) {
     translate([0,0, -overlap*2]) // ensure both these cylinders overlap    
     cylinder(h=length,r=screwheadDiameter/2,center=true);
     }
-    
-    // TODO size and countersink holes
 }
