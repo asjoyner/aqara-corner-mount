@@ -33,14 +33,13 @@ wallCornerRelief=3;
 // head depth of both: 5.2mm
 screwThreadDiameter = 3;
 screwheadDiameter = 9;
-screwheadDepth = 5.2;
+screwheadDepth = 5.2;   // distance from face of screw to start of threads
 
 screwSeparation = 33;  // Distance between Aqara magnets
-screwSeparationOnAngle = (screwSeparation/sqrt(2));
+screwSeparationOnAngle = (screwSeparation/sqrt(2));  // distance between min the 45 degree plane
 screwOffsetFromCenter = screwSeparationOnAngle/2;
-screwOffset = screwOffsetFromCenter - (screwheadDiameter/2);
+screwOffset = screwOffsetFromCenter - (screwheadDepth/sqrt(2));
 echo("screwOffset: ", screwOffset);  // determined to keep the screw 
-screwDepth=6;
 
 overlap=0.001;  // overlap each side by 1mm
 
@@ -132,7 +131,7 @@ intersection() {
 module screwhole(length) {
 
     translate([0,0,-(width+screwheadDepth-(length/2))])  // move to flush with wall
-    translate([0,0,screwDepth])  // bring screwhead back surface
+    translate([0,0,screwheadDepth])                      // bring screwhead back surface
     {
     // create the screw hole
     cylinder(length,screwThreadDiameter/2,screwThreadDiameter/2,center=true);
