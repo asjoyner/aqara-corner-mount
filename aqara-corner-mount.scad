@@ -1,10 +1,10 @@
 $fa = 1;
 $fs = 0.4;
-height=63; // working in mm
+height=65; // working in mm
 width=height/sqrt(2);
 mountDepth=3;
 mountRadius=24.6;  // set to 24.5 for a tight friction fit, 24.75 for easy sliding
-faceBrimWidth=1;
+faceBrimWidth=2;
 faceRadius=mountRadius+faceBrimWidth;
 rearRadius=6;
 rearConeDepth=height;
@@ -14,15 +14,16 @@ powerGroupHeight=height/2-14;
 pocketFrontWallThickness=.75;
 pocketDepth=30;  // when viewed from the top, how far down does the pocket extend
 pocketWidth=16;  // when viewed from the top, how wide is the pocket
-pocketHeight=10; // when viewed from the top, how "tall" is the pocket
+pocketHeight=11; // when viewed from the top, how "tall" is the pocket
 
 cablepocketFrontWallThickness=1;
 cablepocketDepth=30;  // when viewed from the top, how far down does the pocket extend
 cablepocketWidth=11;  // when viewed from the top, how wide is the pocket
-cablepocketHeight=12; // when viewed from the top, how "tall" is the pocket
+cablepocketHeight=10.5; // when viewed from the top, how "tall" is the pocket
 
 powerplugDiameter=9;      // diameter of the 12v power plug
 powerplugWallThickness=1.5;   // thickness of the material around the plug
+powerplugWallCheat=1;   // thickness of the material around the plug
 
 wallCornerRelief=2.5;  // how much to chop off the back, so it doesn't bind in the corner
 
@@ -81,6 +82,7 @@ difference() {
             translate([-powerplugWallThickness,0,0])  // move back from power pocket        
             translate([0,0,-powerplugWallThickness/2])  // move down to match base
             translate([0,0,overlap])                  // ensure it protrudes the surface
+            translate([powerplugWallCheat,0,0])      // move a bit closer to the face
             cylinder(h=powerplugWallThickness*2, r=powerplugDiameter/2, center=true);
 
             // pocket for power supply cable
